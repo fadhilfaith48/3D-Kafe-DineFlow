@@ -1,0 +1,82 @@
+@import 'tailwindcss';
+
+/* Token desain (Tailwind 4 memakai @theme, tanpa tailwind.config.js) */
+@theme {
+  --color-wall: #e6d2b8;
+  --color-wood: #7a4a2b;
+  --color-floor: #8a6244;
+  --color-caramel: #b5652f;
+  --color-lamp: #ffb066;
+  --color-daylight: #a9d6f5;
+  --color-leaf: #3f8a4f;
+  --color-ink: #1a110b;
+  --color-cream: #f6eada;
+  --color-chalk: #23302a;
+
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Plus Jakarta Sans Variable', system-ui, -apple-system, sans-serif;
+
+  --ease-hero: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-ink);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--color-caramel);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-lamp);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  canvas {
+    display: block;
+    touch-action: pan-y;
+  }
+}
+
+/* Hormati preferensi gerak berkurang */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Garis halus untuk papan menu kapur */
+.chalk-line {
+  background-image: linear-gradient(
+    to right,
+    rgba(246, 234, 218, 0.55),
+    rgba(246, 234, 218, 0.2)
+  );
+  border-radius: 999px;
+}

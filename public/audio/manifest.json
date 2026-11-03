@@ -1,0 +1,10 @@
+{
+  "track": "cafe_ambience.mp3",
+  "durationSeconds": 45,
+  "sampleRate": 44100,
+  "channels": 1,
+  "bitrateKbps": 96,
+  "bytes": 540421,
+  "generatedFrom": "scripts/build-audio.mjs",
+  "license": "original procedural synthesis — no third-party samples"
+}

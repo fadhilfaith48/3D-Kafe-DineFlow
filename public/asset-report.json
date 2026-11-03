@@ -1,0 +1,35 @@
+{
+  "schema": "kopi-senja/asset-report@1",
+  "ok": true,
+  "budgets": {
+    "perModelTriangles": 2000,
+    "totalModelsBytes": 3145728,
+    "totalTexturesBytes": 4194304,
+    "audioBytes": 1572864
+  },
+  "models": {
+    "files": 24,
+    "bytes": 162636,
+    "triangles": 9566,
+    "verifiedBytes": 162636,
+    "verifiedTriangles": 9566
+  },
+  "textures": {
+    "materials": 7,
+    "files": 28,
+    "bytes": 535982
+  },
+  "audio": {
+    "track": "cafe_ambience.mp3",
+    "durationSeconds": 45,
+    "sampleRate": 44100,
+    "channels": 1,
+    "bitrateKbps": 96,
+    "bytes": 540421,
+    "generatedFrom": "scripts/build-audio.mjs",
+    "license": "original procedural synthesis — no third-party samples",
+    "verifiedBytes": 540421
+  },
+  "dracoDecoder": true,
+  "failures": []
+}

@@ -1,0 +1,394 @@
+{
+  "schema": "kopi-senja/model-catalog@1",
+  "models": {
+    "table": {
+      "file": "table.glb",
+      "triangles": 120,
+      "bounds": {
+        "min": [
+          -0.6,
+          0,
+          -0.4
+        ],
+        "max": [
+          0.6,
+          0.75,
+          0.4
+        ]
+      }
+    },
+    "chair": {
+      "file": "chair.glb",
+      "triangles": 216,
+      "bounds": {
+        "min": [
+          -0.249,
+          -0.001,
+          -0.264
+        ],
+        "max": [
+          0.249,
+          1.172,
+          0.23
+        ]
+      }
+    },
+    "pendant_lamp": {
+      "file": "pendant_lamp.glb",
+      "triangles": 616,
+      "bounds": {
+        "min": [
+          -0.352,
+          -0.92,
+          -0.352
+        ],
+        "max": [
+          0.352,
+          0,
+          0.352
+        ]
+      }
+    },
+    "bar_counter": {
+      "file": "bar_counter.glb",
+      "triangles": 192,
+      "bounds": {
+        "min": [
+          -1.59,
+          0,
+          -0.475
+        ],
+        "max": [
+          1.59,
+          1.063,
+          0.525
+        ]
+      }
+    },
+    "sink": {
+      "file": "sink.glb",
+      "triangles": 592,
+      "bounds": {
+        "min": [
+          -0.355,
+          -0.205,
+          -0.243
+        ],
+        "max": [
+          0.243,
+          0.322,
+          0.243
+        ]
+      }
+    },
+    "glass_shelf": {
+      "file": "glass_shelf.glb",
+      "triangles": 192,
+      "bounds": {
+        "min": [
+          -1.12,
+          -0.895,
+          -0.177
+        ],
+        "max": [
+          1.12,
+          0.897,
+          0.177
+        ]
+      }
+    },
+    "jar": {
+      "file": "jar.glb",
+      "triangles": 516,
+      "bounds": {
+        "min": [
+          -0.122,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.122,
+          0.395,
+          0.125
+        ]
+      }
+    },
+    "pastry": {
+      "file": "pastry.glb",
+      "triangles": 392,
+      "bounds": {
+        "min": [
+          -0.205,
+          0,
+          -0.2
+        ],
+        "max": [
+          0.197,
+          0.167,
+          0.2
+        ]
+      }
+    },
+    "espresso_machine": {
+      "file": "espresso_machine.glb",
+      "triangles": 672,
+      "bounds": {
+        "min": [
+          -0.5,
+          -0.003,
+          -0.285
+        ],
+        "max": [
+          0.517,
+          0.637,
+          0.42
+        ]
+      }
+    },
+    "kitchen_island": {
+      "file": "kitchen_island.glb",
+      "triangles": 468,
+      "bounds": {
+        "min": [
+          -1.04,
+          0,
+          -0.51
+        ],
+        "max": [
+          1.04,
+          0.92,
+          0.51
+        ]
+      }
+    },
+    "range_hood": {
+      "file": "range_hood.glb",
+      "triangles": 60,
+      "bounds": {
+        "min": [
+          -0.51,
+          -0.89,
+          -0.34
+        ],
+        "max": [
+          0.51,
+          -0.005,
+          0.34
+        ]
+      }
+    },
+    "fridge": {
+      "file": "fridge.glb",
+      "triangles": 304,
+      "bounds": {
+        "min": [
+          -0.6,
+          0,
+          -0.38
+        ],
+        "max": [
+          0.6,
+          2.1,
+          0.46
+        ]
+      }
+    },
+    "pot_rack": {
+      "file": "pot_rack.glb",
+      "triangles": 928,
+      "bounds": {
+        "min": [
+          -0.9,
+          -0.228,
+          -0.44
+        ],
+        "max": [
+          0.9,
+          0.03,
+          0.44
+        ]
+      }
+    },
+    "copper_pot": {
+      "file": "copper_pot.glb",
+      "triangles": 464,
+      "bounds": {
+        "min": [
+          -0.195,
+          -0.246,
+          -0.192
+        ],
+        "max": [
+          0.195,
+          0.441,
+          0.192
+        ]
+      }
+    },
+    "plant": {
+      "file": "plant.glb",
+      "triangles": 814,
+      "bounds": {
+        "min": [
+          -0.46,
+          0,
+          -0.31
+        ],
+        "max": [
+          0.476,
+          1.38,
+          0.33
+        ]
+      }
+    },
+    "art_frame": {
+      "file": "art_frame.glb",
+      "triangles": 124,
+      "bounds": {
+        "min": [
+          -0.46,
+          -0.59,
+          -0.14
+        ],
+        "max": [
+          0.46,
+          0.59,
+          0.22
+        ]
+      }
+    },
+    "bookshelf": {
+      "file": "bookshelf.glb",
+      "triangles": 396,
+      "bounds": {
+        "min": [
+          -0.815,
+          0,
+          -0.18
+        ],
+        "max": [
+          0.815,
+          2.025,
+          0.18
+        ]
+      }
+    },
+    "menu_board": {
+      "file": "menu_board.glb",
+      "triangles": 156,
+      "bounds": {
+        "min": [
+          -1.1,
+          -0.6,
+          -0.035
+        ],
+        "max": [
+          1.1,
+          0.6,
+          0.054
+        ]
+      }
+    },
+    "window": {
+      "file": "window.glb",
+      "triangles": 120,
+      "bounds": {
+        "min": [
+          -1.75,
+          -1.34,
+          -0.105
+        ],
+        "max": [
+          1.75,
+          1.25,
+          0.345
+        ]
+      }
+    },
+    "door": {
+      "file": "door.glb",
+      "triangles": 92,
+      "bounds": {
+        "min": [
+          -0.95,
+          0,
+          -0.25
+        ],
+        "max": [
+          0.95,
+          2.76,
+          0.45
+        ]
+      }
+    },
+    "cup": {
+      "file": "cup.glb",
+      "triangles": 332,
+      "bounds": {
+        "min": [
+          -0.197,
+          0,
+          -0.2
+        ],
+        "max": [
+          0.197,
+          0.131,
+          0.2
+        ]
+      }
+    },
+    "bar_stool": {
+      "file": "bar_stool.glb",
+      "triangles": 436,
+      "bounds": {
+        "min": [
+          -0.202,
+          -0.001,
+          -0.199
+        ],
+        "max": [
+          0.202,
+          0.745,
+          0.199
+        ]
+      }
+    },
+    "rug": {
+      "file": "rug.glb",
+      "triangles": 84,
+      "bounds": {
+        "min": [
+          -2.3,
+          0,
+          -1.6
+        ],
+        "max": [
+          2.3,
+          0.025,
+          1.6
+        ]
+      }
+    },
+    "barista": {
+      "file": "barista.glb",
+      "triangles": 1280,
+      "bounds": {
+        "min": [
+          -0.18,
+          -0.455,
+          -0.173
+        ],
+        "max": [
+          0.18,
+          0.6,
+          0.18
+        ]
+      }
+    }
+  },
+  "totals": {
+    "files": 24,
+    "bytes": 162636,
+    "triangles": 9566
+  }
+}

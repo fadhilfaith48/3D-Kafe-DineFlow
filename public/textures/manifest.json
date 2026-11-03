@@ -1,0 +1,152 @@
+{
+  "size": 512,
+  "textures": [
+    {
+      "name": "oak",
+      "maps": {
+        "albedo": {
+          "file": "oak_albedo.webp",
+          "bytes": 11566
+        },
+        "normal": {
+          "file": "oak_normal.webp",
+          "bytes": 52650
+        },
+        "roughness": {
+          "file": "oak_roughness.webp",
+          "bytes": 9210
+        },
+        "metallic": {
+          "file": "oak_metallic.webp",
+          "bytes": 528
+        }
+      }
+    },
+    {
+      "name": "marble",
+      "maps": {
+        "albedo": {
+          "file": "marble_albedo.webp",
+          "bytes": 10020
+        },
+        "normal": {
+          "file": "marble_normal.webp",
+          "bytes": 49496
+        },
+        "roughness": {
+          "file": "marble_roughness.webp",
+          "bytes": 6662
+        },
+        "metallic": {
+          "file": "marble_metallic.webp",
+          "bytes": 528
+        }
+      }
+    },
+    {
+      "name": "leather",
+      "maps": {
+        "albedo": {
+          "file": "leather_albedo.webp",
+          "bytes": 2972
+        },
+        "normal": {
+          "file": "leather_normal.webp",
+          "bytes": 79130
+        },
+        "roughness": {
+          "file": "leather_roughness.webp",
+          "bytes": 11732
+        },
+        "metallic": {
+          "file": "leather_metallic.webp",
+          "bytes": 528
+        }
+      }
+    },
+    {
+      "name": "brass",
+      "maps": {
+        "albedo": {
+          "file": "brass_albedo.webp",
+          "bytes": 9184
+        },
+        "normal": {
+          "file": "brass_normal.webp",
+          "bytes": 72202
+        },
+        "roughness": {
+          "file": "brass_roughness.webp",
+          "bytes": 11010
+        },
+        "metallic": {
+          "file": "brass_metallic.webp",
+          "bytes": 528
+        }
+      }
+    },
+    {
+      "name": "steel",
+      "maps": {
+        "albedo": {
+          "file": "steel_albedo.webp",
+          "bytes": 15088
+        },
+        "normal": {
+          "file": "steel_normal.webp",
+          "bytes": 80198
+        },
+        "roughness": {
+          "file": "steel_roughness.webp",
+          "bytes": 22520
+        },
+        "metallic": {
+          "file": "steel_metallic.webp",
+          "bytes": 528
+        }
+      }
+    },
+    {
+      "name": "plaster",
+      "maps": {
+        "albedo": {
+          "file": "plaster_albedo.webp",
+          "bytes": 2500
+        },
+        "normal": {
+          "file": "plaster_normal.webp",
+          "bytes": 29196
+        },
+        "roughness": {
+          "file": "plaster_roughness.webp",
+          "bytes": 2618
+        },
+        "metallic": {
+          "file": "plaster_metallic.webp",
+          "bytes": 528
+        }
+      }
+    },
+    {
+      "name": "ceramic",
+      "maps": {
+        "albedo": {
+          "file": "ceramic_albedo.webp",
+          "bytes": 3128
+        },
+        "normal": {
+          "file": "ceramic_normal.webp",
+          "bytes": 45348
+        },
+        "roughness": {
+          "file": "ceramic_roughness.webp",
+          "bytes": 5856
+        },
+        "metallic": {
+          "file": "ceramic_metallic.webp",
+          "bytes": 528
+        }
+      }
+    }
+  ]
+}
