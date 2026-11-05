@@ -4,6 +4,7 @@ import { useGyroPermission } from '../hooks/useGyroPermission'
 import { useHeroStore } from '../store/useHeroStore'
 import { useSceneStore } from '../store/useSceneStore'
 import type { ZoneId } from '../types/scene'
+import { LightingMenu } from './LightingMenu'
 
 /**
  * Kendali 3D:
@@ -134,6 +135,8 @@ export function HeroControls() {
         >
           {dayMode === 'day' ? '☀️ Mode malam' : '🌙 Mode siang'}
         </button>
+
+        <LightingMenu />
 
         <button
           type="button"

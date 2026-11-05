@@ -86,6 +86,8 @@ function Exposure() {
 function Scene() {
   const tier = useHeroStore((state) => state.tier)
   const day = useSceneStore((state) => state.dayMode === 'day')
+  const rectOn = useSceneStore((state) => state.lightformers.rect)
+  const circleOn = useSceneStore((state) => state.lightformers.circle)
   const tierConfig = TIERS[tier]
   const night = LIGHTING.night
 
@@ -137,43 +139,42 @@ function Scene() {
         <pointLight position={[0, 2.2, 0]} intensity={night.surfaceIntensity} distance={16} decay={2} color="#FFC48A" />
       )}
 
-      {/* Environment lokal (Lightformer) — tanpa HDRI eksternal. */}
-      <Environment key={day ? 'day' : 'night'} resolution={64} frames={1}>
-        {day ? (
+      {/* Environment lokal (Lightformer) — tanpa HDRI eksternal.
+          Rect & circle bisa dinyalakan/dimatikan terpisah dari panel Cahaya. */}
+      <Environment
+        key={`${day ? 'day' : 'night'}-${rectOn ? 'rect' : 'no-rect'}-${circleOn ? 'circle' : 'no-circle'}`}
+        resolution={64}
+        frames={1}
+      >
+        {rectOn ? (
           <>
             <Lightformer
               form="rect"
-              intensity={1.6}
-              color="#FFE3C0"
-              position={[-4, 3.2, 4]}
-              scale={[9, 6, 1]}
+              intensity={day ? 1.6 : 0.35}
+              color={day ? '#FFE3C0' : '#7C8FB0'}
+              position={day ? [-4, 3.2, 4] : [0, 3.4, 5]}
+              scale={day ? [9, 6, 1] : [8, 5, 1]}
             />
-            <Lightformer
-              form="rect"
-              intensity={0.9}
-              color={PALETTE.daylight}
-              position={[5, 3, -2]}
-              scale={[7, 5, 1]}
-            />
+            {day ? (
+              <Lightformer
+                form="rect"
+                intensity={0.9}
+                color={PALETTE.daylight}
+                position={[5, 3, -2]}
+                scale={[7, 5, 1]}
+              />
+            ) : null}
           </>
-        ) : (
-          <>
-            <Lightformer
-              form="circle"
-              intensity={1.1}
-              color={PALETTE.lamp}
-              position={[0, 5, 0]}
-              scale={[5, 5, 1]}
-            />
-            <Lightformer
-              form="rect"
-              intensity={0.35}
-              color="#7C8FB0"
-              position={[0, 3.4, 5]}
-              scale={[8, 5, 1]}
-            />
-          </>
-        )}
+        ) : null}
+        {circleOn ? (
+          <Lightformer
+            form="circle"
+            intensity={day ? 0.9 : 1.1}
+            color={day ? PALETTE.daylight : PALETTE.lamp}
+            position={[0, 5, 0]}
+            scale={[5, 5, 1]}
+          />
+        ) : null}
       </Environment>
 
       {/* Seluruh kafe dari layout JSON + barista GLB. */}

@@ -167,6 +167,7 @@ Fallback tampil jika WebGL tidak tersedia, tombol **Matikan 3D** ditekan, atau r
 | Lihat sekitar saat walk | Klik adegan untuk mengunci pointer, gerakkan mouse |
 | Keluar walk | `Esc` atau tombol **Keluar** |
 | Siang / malam | Tombol ☀️/🌙 atau `N` |
+| Lightformer rect / circle | Tombol **💡 Cahaya**, lalu nyalakan/matikan switch-nya |
 | Musik ambience on/off | Tombol 🔊, atau `M` |
 | Jeda / lanjut animasi | Tombol atau `P` |
 | Matikan / nyalakan 3D | Tombol atau `3` (diingat di localStorage) |
