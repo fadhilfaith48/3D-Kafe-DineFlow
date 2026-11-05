@@ -8,6 +8,7 @@ import { InfoCard } from './components/InfoCard'
 import { Loader } from './components/Loader'
 import { MenuSection } from './components/MenuSection'
 import { SceneBoundary } from './components/SceneBoundary'
+import { WalkTouchControls } from './components/WalkTouchControls'
 import { SCROLL } from './config/scene'
 import { tableFromQuery } from './data/sceneLayout'
 import { useHeroVisibility } from './hooks/useHeroVisibility'
@@ -68,6 +69,7 @@ export default function App() {
               <Loader />
               <HeroOverlay />
               <HeroControls />
+              <WalkTouchControls />
               <InfoCard />
             </>
           ) : (

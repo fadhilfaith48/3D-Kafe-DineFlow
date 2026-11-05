@@ -175,8 +175,14 @@ export function HeroControls() {
         <div className="pointer-events-auto absolute inset-x-0 bottom-4 z-30 flex justify-center px-3 sm:bottom-6">
           <div className="flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-cream/20 bg-ink/80 px-4 py-2 text-[11px] text-cream/80 backdrop-blur-sm sm:text-xs">
             <span className="font-semibold text-cream">Walk mode</span>
-            <span className="hidden sm:inline">Klik adegan untuk melihat · WASD/panah gerak · Shift lari · Esc keluar</span>
-            <span className="sm:hidden">Klik + WASD · Esc keluar</span>
+            {coarsePointer ? (
+              <span>Joystick kiri gerak · geser layar untuk lihat</span>
+            ) : (
+              <>
+                <span className="hidden sm:inline">Klik adegan untuk melihat · WASD/panah gerak · Shift lari · Esc keluar</span>
+                <span className="sm:hidden">Klik + WASD · Esc keluar</span>
+              </>
+            )}
             <button
               type="button"
               onClick={exitWalk}

@@ -164,7 +164,8 @@ Fallback tampil jika WebGL tidak tersedia, tombol **Matikan 3D** ditekan, atau r
 | Kembali ke tampak penuh | Tombol **Kembali ke tampak penuh** atau `0` |
 | Mode jalan kaki (first person) | Tombol **🚶 Jelajahi Kafe** / **Jelajah kaki**, atau `F` |
 | Gerak saat walk | `WASD` / panah; `Shift` untuk lari |
-| Lihat sekitar saat walk | Klik adegan untuk mengunci pointer, gerakkan mouse |
+| Walk di HP | Joystick kiri untuk gerak, geser layar untuk melihat |
+| Lihat sekitar saat walk | Desktop: klik adegan untuk mengunci pointer, gerakkan mouse |
 | Keluar walk | `Esc` atau tombol **Keluar** |
 | Siang / malam | Tombol ☀️/🌙 atau `N` |
 | Lightformer rect / circle | Tombol **💡 Cahaya**, lalu nyalakan/matikan switch-nya |

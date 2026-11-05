@@ -9,6 +9,7 @@ import {
   WALK_SPAWN,
   walkBounds,
 } from '../../src/three/walk/collision'
+import { joystickToInput } from '../../src/three/walk/touchInput'
 
 const colliders = buildColliders()
 const bounds = walkBounds()
@@ -103,5 +104,34 @@ describe('walk mode: collision 20 × 12', () => {
     const justInside = table.minZ - WALK_RADIUS + 0.01
     expect(isWalkable(6.8, justOutside, [table])).toBe(true)
     expect(isWalkable(6.8, justInside, [table])).toBe(false)
+  })
+})
+
+describe('joystick sentuh', () => {
+  it('diam saat berada di tengah / dalam deadzone', () => {
+    expect(joystickToInput(0, 0, 40)).toEqual({ x: 0, y: 0, strength: 0 })
+    expect(joystickToInput(3, 2, 40)).toEqual({ x: 0, y: 0, strength: 0 })
+  })
+
+  it('menerjemahkan arah joystick ke sumbu gerak', () => {
+    const right = joystickToInput(40, 0, 40)
+    expect(right.x).toBeCloseTo(1)
+    expect(right.y).toBeCloseTo(0)
+
+    const up = joystickToInput(0, -40, 40)
+    expect(up.x).toBeCloseTo(0)
+    expect(up.y).toBeCloseTo(-1)
+  })
+
+  it('membatasi joystick yang ditarik melewati radius', () => {
+    const input = joystickToInput(120, 120, 40)
+    expect(Math.hypot(input.x, input.y)).toBeCloseTo(1)
+    expect(input.strength).toBeCloseTo(1)
+  })
+
+  it('kekuatan bertambah halus setelah deadzone', () => {
+    const half = joystickToInput(20, 0, 40)
+    expect(half.strength).toBeGreaterThan(0)
+    expect(half.strength).toBeLessThan(0.5)
   })
 })
