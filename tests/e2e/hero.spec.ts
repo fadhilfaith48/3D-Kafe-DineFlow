@@ -9,7 +9,7 @@ test('hero tampil dan CTA menuju menu', async ({ page }) => {
   await expect(page.locator('#menu')).toBeInViewport()
 })
 
-test('mode gambar tampil saat 3D dimatikan', async ({ page }) => {
+test('fallback tampil saat 3D dimatikan', async ({ page }) => {
   await page.addInitScript(() => {
     window.localStorage.setItem(
       'kopi-senja:hero',
@@ -17,8 +17,9 @@ test('mode gambar tampil saat 3D dimatikan', async ({ page }) => {
     )
   })
   await page.goto('/')
-  await expect(page.getByText(/mode gambar/i)).toBeVisible()
-  await expect(page.getByRole('link', { name: /lihat menu/i }).first()).toBeVisible()
+  await expect(page.getByRole('button', { name: /nyalakan 3d/i })).toBeVisible()
+  await page.getByRole('button', { name: /nyalakan 3d/i }).click()
+  await expect(page.getByRole('button', { name: /nyalakan 3d/i })).toBeHidden()
 })
 
 test('tombol kontrol 3D bisa diakses keyboard', async ({ page }) => {
@@ -47,8 +48,17 @@ test('tombol area membuka kartu info lalu kembali ke tampak penuh', async ({ pag
   await expect(card).toBeHidden()
 })
 
-test('pin label zona muncul setelah intro dan bisa diklik', async ({ page }) => {
+test('pin label zona muncul saat tur dimulai dan bisa diklik', async ({ page }) => {
   await page.goto('/')
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+  await expect(page.getByRole('button', { name: /jelajahi dapur/i })).toHaveCount(0)
+
+  await page.evaluate(() => {
+    const hero = document.getElementById('hero')
+    if (!hero) return
+    const range = hero.offsetHeight - window.innerHeight
+    window.scrollTo({ top: range * 0.32, behavior: 'instant' })
+  })
 
   const pin = page.getByRole('button', { name: /jelajahi dapur/i })
   await expect(pin).toBeVisible({ timeout: 20_000 })

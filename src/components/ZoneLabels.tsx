@@ -1,5 +1,8 @@
 import { Html } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
+import { useState } from 'react'
 import { ZONES } from '../data/zones'
+import { heroMotion } from '../lib/scroll'
 import { useHeroStore } from '../store/useHeroStore'
 import type { Zone } from '../types/scene'
 
@@ -82,8 +85,15 @@ export function ZoneLabels() {
       !state.infoOpen,
   )
   const activeZone = useHeroStore((state) => state.activeZone)
+  // Pin disembunyikan selama teks hero masih terbaca agar tidak menutupinya.
+  const [pastHeroCopy, setPastHeroCopy] = useState(false)
 
-  if (!visible) return null
+  useFrame(() => {
+    const next = heroMotion.scroll > 0.1
+    if (next !== pastHeroCopy) setPastHeroCopy(next)
+  })
+
+  if (!visible || !pastHeroCopy) return null
 
   return (
     <group>

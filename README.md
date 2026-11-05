@@ -178,6 +178,8 @@ Fallback tampil jika WebGL tidak tersedia, tombol **Matikan 3D** ditekan, atau r
 - Teks hero adalah HTML asli (bukan di dalam canvas), dengan scrim gradient untuk kontras.
 - Tur scroll memakai hero setinggi **480svh** dengan panggung `sticky`; kamera
   berpindah antarzona, lalu kembali ke tampak penuh di akhir.
+- Pin zona baru muncul setelah hero mulai di-scroll agar tidak menutupi teks;
+  tombol area di bagian bawah tetap selalu tersedia.
 - Walk mode memakai `PointerLockControls` + collision AABB murni
   (`src/three/walk/collision.ts`): pemain tidak bisa menembus meja, kursi, bar,
   atau dapur, dan dibatasi di dalam ruangan.
