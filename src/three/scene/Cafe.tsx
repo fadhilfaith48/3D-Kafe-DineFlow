@@ -163,24 +163,30 @@ function TableGlow() {
   const tableId = useMemo(() => tableFromQuery(rawTable), [rawTable])
   const table = tableId ? getTableById(tableId) : undefined
   const ring = useRef<THREE.Mesh>(null)
+  const beam = useRef<THREE.Mesh>(null)
   const light = useRef<THREE.PointLight>(null)
 
   useFrame((state) => {
     if (!table) return
     const pulse = 0.65 + Math.sin(state.clock.elapsedTime * 2.2) * 0.2
-    const material = ring.current?.material as THREE.MeshBasicMaterial | undefined
-    if (material) material.opacity = pulse
+    const ringMaterial = ring.current?.material as THREE.MeshBasicMaterial | undefined
+    if (ringMaterial) ringMaterial.opacity = pulse
+    const beamMaterial = beam.current?.material as THREE.MeshBasicMaterial | undefined
+    if (beamMaterial) beamMaterial.opacity = 0.06 + pulse * 0.07
     if (light.current) light.current.intensity = 1.6 + pulse * 1.8
   })
 
   if (!table) return null
   const [x, , z] = table.position
   const label = `Meja ${table.id.slice(-2)}`
+  // Permukaan meja hasil generator berada di y = 0,75.
+  const tabletop = 0.765
 
   return (
     <group>
-      <mesh ref={ring} position={[x, 0.035, z]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[0.88, 1.02, 64]} />
+      {/* Cincin & piringan cahaya tepat di atas permukaan meja. */}
+      <mesh ref={ring} position={[x, tabletop, z]} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.4, 0.5, 64]} />
         <meshBasicMaterial
           color="#FFB066"
           transparent
@@ -190,25 +196,40 @@ function TableGlow() {
           side={THREE.DoubleSide}
         />
       </mesh>
-      <mesh position={[x, 0.03, z]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[0.9, 48]} />
+      <mesh position={[x, tabletop - 0.006, z]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[0.47, 48]} />
         <meshBasicMaterial
           color="#FF9A3C"
           transparent
-          opacity={0.07}
+          opacity={0.16}
           depthWrite={false}
           toneMapped={false}
         />
       </mesh>
+
+      {/* Berkas cahaya vertikal agar meja terlihat dari kamera jauh. */}
+      <mesh ref={beam} position={[x, tabletop + 0.58, z]}>
+        <cylinderGeometry args={[0.3, 0.46, 1.16, 32, 1, true]} />
+        <meshBasicMaterial
+          color="#FFB066"
+          transparent
+          opacity={0.1}
+          depthWrite={false}
+          toneMapped={false}
+          side={THREE.DoubleSide}
+          blending={THREE.AdditiveBlending}
+        />
+      </mesh>
+
       <pointLight
         ref={light}
-        position={[x, 0.65, z]}
+        position={[x, 1.15, z]}
         intensity={2.2}
         distance={3.2}
         decay={2}
         color="#FFB066"
       />
-      <Html position={[x, 1.3, z]} center distanceFactor={11} zIndexRange={[15, 0]}>
+      <Html position={[x, 1.65, z]} center distanceFactor={11} zIndexRange={[15, 0]}>
         <div className="pointer-events-none whitespace-nowrap rounded-full border border-lamp/60 bg-[#14100c]/90 px-3 py-1 text-[11px] font-semibold text-[#FFD9A8] shadow-lg">
           {label} · QR aktif
         </div>
