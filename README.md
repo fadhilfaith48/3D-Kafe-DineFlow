@@ -96,6 +96,20 @@ QR di meja memakai `?table=03` (juga menerima `3`, `table_3`, `table_03`).
 tidak ada. Saat parameter itu ada, scene menampilkan cincin cahaya berdenyut,
 point light, dan label **“Meja 03 · QR aktif”** di atas meja tersebut.
 
+### Pesanan mandiri
+
+Menambahkan `&token=...` membuka panel pesanan mandiri untuk meja tersebut:
+
+- daftar menu dengan tombol tambah/kurangi,
+- catatan opsional untuk dapur/barista,
+- subtotal dan jumlah porsi,
+- tombol **Lanjut ke pembayaran**.
+
+Keranjang disimpan di `useOrderStore` (localStorage) dan otomatis dikosongkan
+saat pindah meja. Checkout saat ini berjalan sebagai **demo lokal** — belum ada
+pesanan yang dikirim. Integrasi DineFlow + Xendit tinggal mengisi
+`VITE_DINEFLOW_API_URL` (lihat kelompok integrasi pembayaran di bawah).
+
 ### Render scene dari layout
 
 `src/three/scene/Cafe.tsx` membangun shell ruangan 20 × 12 m (dinding utara &

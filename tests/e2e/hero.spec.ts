@@ -24,6 +24,23 @@ test('fallback tampil saat 3D dimatikan', async ({ page }) => {
   await expect(page.getByRole('button', { name: /nyalakan 3d/i })).toBeHidden()
 })
 
+test('QR meja membuka panel pesanan dan keranjang demo', async ({ page }) => {
+  await page.goto('/?table=03&token=demo')
+
+  const panel = page.getByRole('region', { name: /pesanan meja 03/i })
+  await expect(panel).toBeVisible()
+  await expect(panel.getByText(/qr meja aktif/i)).toBeVisible()
+
+  await panel.getByRole('button', { name: /tambah senja latte/i }).click()
+  await expect(panel.getByRole('button', { name: /kurangi senja latte/i })).toBeVisible()
+  await expect(panel.getByText(/32\.000/).first()).toBeVisible()
+
+  await panel.getByRole('button', { name: /lanjut ke pembayaran/i }).click()
+  await expect(panel.getByText(/pesanan demo diterima/i)).toBeVisible({
+    timeout: 5_000,
+  })
+})
+
 test('tombol kontrol 3D bisa diakses keyboard', async ({ page }) => {
   await page.goto('/')
   const pause = page.getByRole('button', { name: /jeda animasi/i })

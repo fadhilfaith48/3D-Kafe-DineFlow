@@ -7,6 +7,7 @@ import { HeroOverlay } from './components/HeroOverlay'
 import { InfoCard } from './components/InfoCard'
 import { Loader } from './components/Loader'
 import { MenuSection } from './components/MenuSection'
+import { OrderPanel } from './components/OrderPanel'
 import { SceneBoundary } from './components/SceneBoundary'
 import { WalkTouchControls } from './components/WalkTouchControls'
 import { SCROLL } from './config/scene'
@@ -75,6 +76,8 @@ export default function App() {
           ) : (
             <Fallback />
           )}
+          {/* Panel pesanan tetap tersedia meski 3D dimatikan. */}
+          <OrderPanel />
           <AmbienceAudio />
           <DebugPanel />
         </div>
