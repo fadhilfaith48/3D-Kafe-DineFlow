@@ -211,10 +211,13 @@ export function HeroControls() {
             </button>
           </div>
         </div>
-      ) : !infoOpen ? (
+      ) : (
         <nav
           aria-label="Jelajahi area"
-          className="pointer-events-auto absolute inset-x-0 bottom-4 z-30 flex justify-center px-3 sm:bottom-6"
+          aria-hidden={infoOpen || undefined}
+          className={`pointer-events-auto absolute inset-x-0 bottom-4 z-30 flex justify-center px-3 sm:bottom-6 ${
+            infoOpen ? 'hidden' : ''
+          }`}
         >
           <div className="flex max-w-full flex-wrap items-center justify-center gap-2">
             <span className="sr-only">Jelajahi area:</span>
@@ -243,7 +246,7 @@ export function HeroControls() {
             ) : null}
           </div>
         </nav>
-      ) : null}
+      )}
     </>
   )
 }

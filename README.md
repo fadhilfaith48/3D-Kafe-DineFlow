@@ -243,6 +243,8 @@ Fallback tampil jika WebGL tidak tersedia, tombol **Matikan 3D** ditekan, atau r
 - `prefers-reduced-motion`: intro dilewati, transisi kamera dipercepat,
   parallax & partikel dikurangi, kualitas diturunkan.
 - Canvas punya `role="img"` + `aria-label`; kontrol punya `aria-pressed` dan `aria-keyshortcuts`.
+- Kartu info zona adalah dialog dengan fokus awal, focus trap Tab, Escape untuk
+  menutup, dan fokus kembali ke tombol area pemicu.
 - Render berhenti saat hero keluar viewport (`IntersectionObserver` + `frameloop='never'`).
 
 ## Performa

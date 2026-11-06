@@ -36,9 +36,9 @@ test('QR meja membuka panel pesanan dan keranjang demo', async ({ page }) => {
   await expect(panel.getByText(/32\.000/).first()).toBeVisible()
 
   await panel.getByRole('button', { name: /lanjut ke pembayaran/i }).click()
-  await expect(panel.getByText(/pesanan demo diterima/i)).toBeVisible({
-    timeout: 5_000,
-  })
+  await expect(
+    panel.getByRole('heading', { name: /pesanan demo diterima/i }),
+  ).toBeVisible({ timeout: 5_000 })
 })
 
 test('tombol kontrol 3D bisa diakses keyboard', async ({ page }) => {
@@ -65,6 +65,30 @@ test('tombol area membuka kartu info lalu kembali ke tampak penuh', async ({ pag
 
   await card.getByRole('button', { name: /kembali ke tampak penuh/i }).last().click()
   await expect(card).toBeHidden()
+})
+
+test('fokus kartu info terperangkap lalu kembali ke pemicu', async ({ page }) => {
+  await page.goto('/')
+
+  const trigger = page
+    .getByRole('navigation', { name: /jelajahi area/i })
+    .getByRole('button', { name: /bar kopi/i })
+  await trigger.click()
+
+  const card = page.getByRole('dialog', { name: /bar kopi/i })
+  await expect(card.getByRole('button', { name: /tutup kartu info/i })).toBeFocused()
+
+  for (let step = 0; step < 5; step += 1) {
+    await page.keyboard.press('Tab')
+    const inside = await page.evaluate(
+      () => document.activeElement?.closest('[role="dialog"]') !== null,
+    )
+    expect(inside).toBe(true)
+  }
+
+  await page.keyboard.press('Escape')
+  await expect(card).toBeHidden()
+  await expect(trigger).toBeFocused()
 })
 
 test('pin label zona muncul saat tur dimulai dan bisa diklik', async ({ page }) => {

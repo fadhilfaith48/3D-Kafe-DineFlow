@@ -16,15 +16,58 @@ export function InfoCard() {
   const exitFocus = useHeroStore((state) => state.exitFocus)
   const reducedMotion = useHeroStore((state) => state.reducedMotion)
   const root = useRef<HTMLDivElement>(null)
+  const closeButton = useRef<HTMLButtonElement>(null)
+  const previouslyFocused = useRef<HTMLElement | null>(null)
 
-  // Escape = tutup kartu.
+  // Escape menutup, Tab berputar di dalam kartu, dan fokus kembali ke
+  // tombol pemicu saat kartu ditutup.
   useEffect(() => {
     if (!open) return
+    const element = root.current
+    if (!element) return
+
+    previouslyFocused.current = document.activeElement as HTMLElement | null
+    const focusTimer = window.setTimeout(() => closeButton.current?.focus(), 0)
+
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') exitFocus()
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        exitFocus()
+        return
+      }
+      if (event.key !== 'Tab') return
+
+      const focusables = Array.from(
+        element.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((item) => item.offsetParent !== null)
+
+      if (focusables.length === 0) {
+        event.preventDefault()
+        element.focus()
+        return
+      }
+
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+      const active = document.activeElement
+
+      if (event.shiftKey && (active === first || !element.contains(active))) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault()
+        first.focus()
+      }
     }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      window.clearTimeout(focusTimer)
+      document.removeEventListener('keydown', onKeyDown)
+      previouslyFocused.current?.focus?.()
+    }
   }, [open, exitFocus])
 
   // Animasi masuk/keluar (dengan jaring pengaman berbasis waktu supaya
@@ -65,8 +108,9 @@ export function InfoCard() {
     <div
       ref={root}
       role="dialog"
-      aria-modal="false"
+      aria-modal="true"
       aria-labelledby="zone-card-title"
+      tabIndex={-1}
       className="pointer-events-auto absolute inset-x-3 bottom-3 z-30 max-h-[62svh] overflow-y-auto border border-white/15 bg-[#14100c]/92 shadow-[0_18px_50px_rgba(0,0,0,0.55)] sm:inset-x-auto sm:right-5 sm:bottom-6 sm:w-[24rem] lg:right-8"
       style={{ visibility: 'hidden', borderRadius: '16px' }}
     >
@@ -93,9 +137,10 @@ export function InfoCard() {
           </div>
 
           <button
+            ref={closeButton}
             type="button"
             onClick={exitFocus}
-            aria-label="Kembali ke tampak penuh"
+            aria-label="Tutup kartu info"
             className="shrink-0 rounded-full border border-white/25 px-2.5 py-1 text-[11px] font-medium text-white/80 transition hover:border-white/60 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-lamp"
           >
             ✕
