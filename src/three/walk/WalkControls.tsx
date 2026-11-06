@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import type { PointerLockControls as PointerLockControlsImpl } from 'three-stdlib'
 import { clamp } from '../../lib/math'
+import { gyroTilt } from '../../lib/scroll'
 import { useHeroStore } from '../../store/useHeroStore'
 import {
   buildColliders,
@@ -12,7 +13,7 @@ import {
   WALK_SPAWN,
   walkBounds,
 } from './collision'
-import { resetTouchInput, touchInput } from './touchInput'
+import { gyroLookDelta, resetTouchInput, touchInput } from './touchInput'
 
 const UP = new THREE.Vector3(0, 1, 0)
 const forward = new THREE.Vector3()
@@ -35,12 +36,14 @@ const MAX_PITCH = 1.2
  */
 export function WalkControls() {
   const mode = useHeroStore((state) => state.mode)
+  const gyroEnabled = useHeroStore((state) => state.gyroEnabled)
   const exitWalk = useHeroStore((state) => state.exitWalk)
   const { camera, gl } = useThree()
   const controls = useRef<PointerLockControlsImpl>(null)
   const keys = useRef(new Set<string>())
   const look = useRef(new THREE.Euler(0, 0, 0, 'YXZ'))
   const lookTouch = useRef<{ id: number; x: number; y: number } | null>(null)
+  const gyroPrev = useRef({ x: 0, y: 0 })
   const [isTouch] = useState(
     () =>
       typeof window !== 'undefined' &&
@@ -58,6 +61,11 @@ export function WalkControls() {
     look.current.setFromQuaternion(camera.quaternion, 'YXZ')
     camera.updateMatrixWorld()
   }, [active, camera])
+
+  // Saat gyro baru aktif, simpan tilt awal agar pandangan tidak melompat.
+  useEffect(() => {
+    gyroPrev.current = { x: gyroTilt.x, y: gyroTilt.y }
+  }, [gyroEnabled, active])
 
   // Keyboard, pointer lock (desktop), dan drag-look (sentuh).
   useEffect(() => {
@@ -152,6 +160,27 @@ export function WalkControls() {
   useFrame((_, delta) => {
     if (!active) return
     const dt = Math.min(delta, 0.05)
+
+    // Gyro menggerakkan pandangan dengan selisih tilt, sehingga tetap bisa
+    // dikombinasikan dengan drag-look. Hanya tersedia di walk sentuh.
+    if (isTouch && gyroEnabled) {
+      const next = { x: gyroTilt.x, y: gyroTilt.y }
+      const dx = next.y - gyroPrev.current.y
+      const dy = next.x - gyroPrev.current.x
+
+      if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) {
+        const lookDelta = gyroLookDelta(gyroPrev.current, next)
+        look.current.y += lookDelta.yaw
+        look.current.x = clamp(
+          look.current.x + lookDelta.pitch,
+          -MAX_PITCH,
+          MAX_PITCH,
+        )
+        camera.quaternion.setFromEuler(look.current)
+      }
+      gyroPrev.current = next
+    }
+
     const pressed = keys.current
     const shift = pressed.has('ShiftLeft') || pressed.has('ShiftRight')
     const speed = (shift ? 4.1 : 2.25) * dt

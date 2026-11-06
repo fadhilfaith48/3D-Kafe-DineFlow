@@ -5,6 +5,7 @@ import { useHeroStore } from '../store/useHeroStore'
 import { useSceneStore } from '../store/useSceneStore'
 import type { ZoneId } from '../types/scene'
 import { LightingMenu } from './LightingMenu'
+import { MobileControlMenu } from './MobileControlMenu'
 
 /**
  * Kendali 3D:
@@ -106,69 +107,87 @@ export function HeroControls() {
     <>
       {/* Kendali utilitas (pojok kanan atas) */}
       <div className="absolute top-4 right-4 z-30 flex max-w-[calc(100%-2rem)] flex-wrap items-center justify-end gap-2 sm:top-6 sm:right-6">
-        <button
-          type="button"
-          onClick={togglePaused}
-          aria-pressed={paused}
-          aria-keyshortcuts="P"
-          className={utilityClass}
-        >
-          {paused ? 'Lanjutkan animasi' : 'Jeda animasi'}
-        </button>
+        {coarsePointer ? (
+          <>
+            <button
+              type="button"
+              onClick={() => (walking ? exitWalk() : enterWalk())}
+              aria-pressed={walking}
+              aria-keyshortcuts="F"
+              className={walking ? activeUtilityClass : utilityClass}
+            >
+              {walking ? 'Keluar walk' : '🚶 Jelajah kaki'}
+            </button>
 
-        <button
-          type="button"
-          onClick={() => setDisable3D(!disable3D)}
-          aria-pressed={disable3D}
-          aria-keyshortcuts="3"
-          className={utilityClass}
-        >
-          {disable3D ? 'Nyalakan 3D' : 'Matikan 3D'}
-        </button>
+            {walking && supported ? (
+              <button
+                type="button"
+                onClick={() => (enabled ? disable() : void enable())}
+                aria-pressed={enabled}
+                aria-keyshortcuts="G"
+                className={enabled ? activeUtilityClass : utilityClass}
+              >
+                {enabled ? '📱 Gyro aktif' : denied ? 'Gyro ditolak' : '📱 Gyro'}
+              </button>
+            ) : null}
 
-        <button
-          type="button"
-          onClick={toggleDayMode}
-          aria-pressed={dayMode === 'night'}
-          aria-keyshortcuts="N"
-          className={dayMode === 'night' ? activeUtilityClass : utilityClass}
-        >
-          {dayMode === 'day' ? '☀️ Mode malam' : '🌙 Mode siang'}
-        </button>
+            <MobileControlMenu />
+          </>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={togglePaused}
+              aria-pressed={paused}
+              aria-keyshortcuts="P"
+              className={utilityClass}
+            >
+              {paused ? 'Lanjutkan animasi' : 'Jeda animasi'}
+            </button>
 
-        <LightingMenu />
+            <button
+              type="button"
+              onClick={() => setDisable3D(!disable3D)}
+              aria-pressed={disable3D}
+              aria-keyshortcuts="3"
+              className={utilityClass}
+            >
+              {disable3D ? 'Nyalakan 3D' : 'Matikan 3D'}
+            </button>
 
-        <button
-          type="button"
-          onClick={toggleMusicMuted}
-          aria-pressed={!musicMuted}
-          aria-keyshortcuts="M"
-          className={musicMuted ? utilityClass : activeUtilityClass}
-        >
-          {musicMuted ? '🔇 Nyalakan musik' : '🔊 Matikan musik'}
-        </button>
+            <button
+              type="button"
+              onClick={toggleDayMode}
+              aria-pressed={dayMode === 'night'}
+              aria-keyshortcuts="N"
+              className={dayMode === 'night' ? activeUtilityClass : utilityClass}
+            >
+              {dayMode === 'day' ? '☀️ Mode malam' : '🌙 Mode siang'}
+            </button>
 
-        <button
-          type="button"
-          onClick={() => (walking ? exitWalk() : enterWalk())}
-          aria-pressed={walking}
-          aria-keyshortcuts="F"
-          className={walking ? activeUtilityClass : utilityClass}
-        >
-          {walking ? 'Keluar walk' : '🚶 Jelajah kaki'}
-        </button>
+            <LightingMenu />
 
-        {supported && coarsePointer && !disable3D ? (
-          <button
-            type="button"
-            onClick={() => (enabled ? disable() : void enable())}
-            aria-pressed={enabled}
-            aria-keyshortcuts="G"
-            className={utilityClass}
-          >
-            {enabled ? 'Matikan gyro' : denied ? 'Gyro ditolak' : 'Aktifkan gyro'}
-          </button>
-        ) : null}
+            <button
+              type="button"
+              onClick={toggleMusicMuted}
+              aria-pressed={!musicMuted}
+              aria-keyshortcuts="M"
+              className={musicMuted ? utilityClass : activeUtilityClass}
+            >
+              {musicMuted ? '🔇 Nyalakan musik' : '🔊 Matikan musik'}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => (walking ? exitWalk() : enterWalk())}
+              aria-pressed={walking}
+              aria-keyshortcuts="F"
+              className={walking ? activeUtilityClass : utilityClass}
+            >
+              {walking ? 'Keluar walk' : '🚶 Jelajah kaki'}
+            </button>
+          </>
+        )}
       </div>
 
       {walking ? (

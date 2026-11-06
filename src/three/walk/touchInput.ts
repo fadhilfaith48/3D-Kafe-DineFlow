@@ -19,6 +19,28 @@ export interface JoystickInput {
   strength: number
 }
 
+export interface GyroTilt {
+  x: number
+  y: number
+}
+
+/**
+ * Selisih tilt gyro → perubahan yaw/pitch pandangan.
+ * Memakai selisih (bukan nilai absolut) agar bisa digabung dengan drag-look
+ * dan tidak melompat saat gyro baru diaktifkan.
+ */
+export function gyroLookDelta(
+  prev: GyroTilt,
+  next: GyroTilt,
+  yawScale = 0.588,
+  pitchScale = 0.42,
+) {
+  return {
+    yaw: -(next.y - prev.y) * yawScale || 0,
+    pitch: -(next.x - prev.x) * pitchScale || 0,
+  }
+}
+
 /**
  * Ubah offset joystick (piksel, y positif = bawah) menjadi vektor -1..1.
  * Ada deadzone agar jari yang sedikit bergeser tidak membuat pemain berjalan.

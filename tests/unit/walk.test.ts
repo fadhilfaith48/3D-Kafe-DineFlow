@@ -9,7 +9,7 @@ import {
   WALK_SPAWN,
   walkBounds,
 } from '../../src/three/walk/collision'
-import { joystickToInput } from '../../src/three/walk/touchInput'
+import { gyroLookDelta, joystickToInput } from '../../src/three/walk/touchInput'
 
 const colliders = buildColliders()
 const bounds = walkBounds()
@@ -133,5 +133,26 @@ describe('joystick sentuh', () => {
     const half = joystickToInput(20, 0, 40)
     expect(half.strength).toBeGreaterThan(0)
     expect(half.strength).toBeLessThan(0.5)
+  })
+})
+
+describe('look dengan gyro', () => {
+  it('diam saat tilt tidak berubah', () => {
+    expect(gyroLookDelta({ x: 0.2, y: -0.1 }, { x: 0.2, y: -0.1 })).toEqual({
+      yaw: 0,
+      pitch: 0,
+    })
+  })
+
+  it('memutar pandangan ke kanan saat HP dimiringkan ke kanan', () => {
+    const delta = gyroLookDelta({ x: 0, y: 0 }, { x: 0, y: 0.5 })
+    expect(delta.yaw).toBeLessThan(0)
+    expect(delta.pitch).toBe(0)
+  })
+
+  it('menengadah saat bagian atas HP dimiringkan ke belakang', () => {
+    const delta = gyroLookDelta({ x: 0, y: 0 }, { x: -0.5, y: 0 })
+    expect(delta.pitch).toBeGreaterThan(0)
+    expect(delta.yaw).toBe(0)
   })
 })

@@ -225,7 +225,7 @@ Fallback tampil jika WebGL tidak tersedia, tombol **Matikan 3D** ditekan, atau r
 | Musik ambience on/off | Tombol 🔊, atau `M` |
 | Jeda / lanjut animasi | Tombol atau `P` |
 | Matikan / nyalakan 3D | Tombol atau `3` (diingat di localStorage) |
-| Gyroscope | Tombol (hanya perangkat sentuh) atau `G` |
+| Gyroscope saat walk | Tombol **📱 Gyro** (perangkat sentuh) atau `G` |
 | Buka QR meja | `?table=03` pada URL |
 
 - Teks hero adalah HTML asli (bukan di dalam canvas), dengan scrim gradient untuk kontras.
@@ -233,6 +233,10 @@ Fallback tampil jika WebGL tidak tersedia, tombol **Matikan 3D** ditekan, atau r
   berpindah antarzona, lalu kembali ke tampak penuh di akhir.
 - Pin zona baru muncul setelah hero mulai di-scroll agar tidak menutupi teks;
   tombol area di bagian bawah tetap selalu tersedia.
+- Di perangkat sentuh, kontrol sekunder (jeda, siang/malam, musik, 3D,
+  lightformer) diringkas ke panel **⚙️**; tombol walk dan gyro tetap di luar
+  panel. Gyro hanya muncul saat walk dan menggerakkan pandangan bersama
+  drag-look.
 - Walk mode memakai `PointerLockControls` + collision AABB murni
   (`src/three/walk/collision.ts`): pemain tidak bisa menembus meja, kursi, bar,
   atau dapur, dan dibatasi di dalam ruangan.

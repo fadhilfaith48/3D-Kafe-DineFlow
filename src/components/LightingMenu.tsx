@@ -11,7 +11,7 @@ interface SwitchRowProps {
   onToggle: () => void
 }
 
-function SwitchRow({ label, hint, checked, onToggle }: SwitchRowProps) {
+export function SwitchRow({ label, hint, checked, onToggle }: SwitchRowProps) {
   return (
     <button
       type="button"
