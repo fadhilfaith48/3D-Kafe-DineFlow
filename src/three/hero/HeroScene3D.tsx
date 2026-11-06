@@ -106,7 +106,7 @@ function Scene() {
       />
       <hemisphereLight
         args={[
-          day ? '#FFE2BE' : '#7C8FB0',
+          day ? '#E8EFF6' : '#7C8FB0',
           day ? '#2A1A10' : '#05070C',
           day ? 0.7 : night.hemisphereIntensity,
         ]}
@@ -151,7 +151,7 @@ function Scene() {
             <Lightformer
               form="rect"
               intensity={day ? 1.6 : 0.35}
-              color={day ? '#FFE3C0' : '#7C8FB0'}
+              color={day ? LIGHTING.sunColor : '#7C8FB0'}
               position={day ? [-4, 3.2, 4] : [0, 3.4, 5]}
               scale={day ? [9, 6, 1] : [8, 5, 1]}
             />

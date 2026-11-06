@@ -31,10 +31,11 @@ export const PALETTE = {
 
 export const LIGHTING = {
   sunIntensity: 3.4,
-  sunColor: '#FFE7C4',
+  /** Netral 5600 K (bukan golden hour) agar mode siang terasa seperti siang. */
+  sunColor: '#FFEDE0',
   sunPosition: [-10, 11, 8] as [number, number, number],
   ambientIntensity: 0.85,
-  ambientColor: '#FFD9B0',
+  ambientColor: '#F2E7DC',
   /** Satu-satunya sumber bayangan. */
   lampIntensity: 22,
   lampDistance: 11,

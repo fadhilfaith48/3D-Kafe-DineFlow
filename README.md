@@ -51,7 +51,8 @@ Jangan mengedit JSON langsung; ubah generator lalu jalankan `npm run layout:sync
 - **38 kursi** high-back: 4 kursi untuk 7 meja, 5 kursi untuk `table_01` dan `table_09`.
 - **Bar 3 m** di dinding utara, dapur terbuka di barat, 4 jendela di selatan, pintu di timur.
 - **5 lampu gantung** dengan intensity 22 (mode malam), plus lightformer `rect` & `circle` yang bisa di-toggle.
-- **Siang**: ambient 0.85, cahaya jendela hangat, lampu gantung redup (intensitas 5).
+- **Siang**: ambient 0.85, cahaya jendela netral 5600 K (`sunColor`
+  `#FFEDE0`), lampu gantung redup (intensitas 5).
 - **Malam**: lampu gantung penuh (22), ambient 0.24, exposure 1.2; lightformer
   malam memakai bentuk lingkaran lampu + bidang biru redup.
 
