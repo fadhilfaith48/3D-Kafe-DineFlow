@@ -17,6 +17,8 @@ test('fallback tampil saat 3D dimatikan', async ({ page }) => {
     )
   })
   await page.goto('/')
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+  await expect(page.getByRole('link', { name: /lihat menu/i }).first()).toBeVisible()
   await expect(page.getByRole('button', { name: /nyalakan 3d/i })).toBeVisible()
   await page.getByRole('button', { name: /nyalakan 3d/i }).click()
   await expect(page.getByRole('button', { name: /nyalakan 3d/i })).toBeHidden()

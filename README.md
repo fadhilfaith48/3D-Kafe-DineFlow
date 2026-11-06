@@ -150,7 +150,9 @@ Jika menambah/mengubah model, tambahkan entri di `src/data/modelCatalog.json`
 const FALLBACK_IMAGE: string | null = null
 ```
 
-- `null` → poster CSS gradient krem → cokelat dengan judul & CTA yang sama.
+- `null` → poster CSS gradient krem → cokelat dengan judul, deskripsi, dan CTA
+  menu yang sama seperti hero 3D; tombol **Nyalakan 3D** muncul bila pengguna
+  sendiri yang mematikan 3D.
 - Isi dengan `'/fallback-hero.webp'` → memakai gambar tersebut (otomatis kembali ke poster CSS bila gambar gagal dimuat).
 
 Fallback tampil jika WebGL tidak tersedia, tombol **Matikan 3D** ditekan, atau renderer gagal (Error Boundary).
