@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { formatRupiah, MENU_ITEMS } from '../data/menu'
 import { cartTotals } from '../lib/cart'
+import { createOrder, isLiveCheckout, type OrderResult } from '../lib/orderApi'
 import { useOrderStore } from '../store/useOrderStore'
 
-type CheckoutState = 'idle' | 'processing' | 'done'
+type CheckoutState = 'idle' | 'processing' | 'done' | 'error'
 
 /**
  * Panel pesanan mandiri yang dibuka dari QR meja (`?table=03&token=...`).
@@ -14,6 +15,7 @@ type CheckoutState = 'idle' | 'processing' | 'done'
 export function OrderPanel() {
   const mode = useOrderStore((state) => state.mode)
   const tableId = useOrderStore((state) => state.tableId)
+  const tableToken = useOrderStore((state) => state.tableToken)
   const cart = useOrderStore((state) => state.cart)
   const note = useOrderStore((state) => state.note)
   const setMode = useOrderStore((state) => state.setMode)
@@ -24,30 +26,45 @@ export function OrderPanel() {
 
   const [collapsed, setCollapsed] = useState(false)
   const [checkout, setCheckout] = useState<CheckoutState>('idle')
-  const [demoOrderId, setDemoOrderId] = useState('')
-  const timer = useRef<number | null>(null)
+  const [result, setResult] = useState<OrderResult | null>(null)
+  const [error, setError] = useState('')
 
-  useEffect(
-    () => () => {
-      if (timer.current) window.clearTimeout(timer.current)
-    },
-    [],
-  )
-
-  if (mode !== 'selfOrder' || !tableId) return null
+  if (mode !== 'selfOrder' || !tableId || !tableToken) return null
 
   const tableNumber = tableId.slice(-2)
   const { count, subtotal } = cartTotals(cart, MENU_ITEMS)
 
-  const beginCheckout = () => {
+  const beginCheckout = async () => {
     if (count === 0 || checkout === 'processing') return
     setCheckout('processing')
-    // Demo lokal: nanti diganti panggilan `createOrder` ke DineFlow.
-    timer.current = window.setTimeout(() => {
-      setDemoOrderId(`DEMO-${Date.now().toString(36).toUpperCase().slice(-5)}`)
+    setError('')
+
+    try {
+      const order = await createOrder({
+        tableId,
+        tableToken,
+        cart,
+        note,
+      })
+      setResult(order)
+
+      if (order.invoiceUrl) {
+        // Pembayaran Xendit dibuat di server DineFlow.
+        clearCart()
+        window.location.assign(order.invoiceUrl)
+        return
+      }
+
       setCheckout('done')
       clearCart()
-    }, 700)
+    } catch (cause) {
+      setCheckout('error')
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : 'Pesanan gagal dibuat. Coba lagi sebentar lagi.',
+      )
+    }
   }
 
   const close = () => {
@@ -121,19 +138,26 @@ export function OrderPanel() {
             ✓
           </div>
           <h3 className="mt-4 font-display text-lg font-semibold text-cream">
-            Pesanan demo diterima
+            {result?.mode === 'demo' ? 'Pesanan demo diterima' : 'Pesanan dibuat'}
           </h3>
           <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-cream/70">
-            Nomor demo <span className="font-semibold text-cream">{demoOrderId}</span>.
-            Pembayaran belum aktif — pesanan tidak dikirim ke dapur.
+            Nomor pesanan{' '}
+            <span className="font-semibold text-cream">{result?.orderId}</span>.
+            {result?.mode === 'demo'
+              ? ' Pembayaran belum aktif — pesanan tidak dikirim ke dapur.'
+              : ' Pembayaran sedang disiapkan.'}
           </p>
           <p className="mx-auto mt-3 max-w-xs text-[11px] leading-relaxed text-cream/50">
-            Setelah DineFlow + Xendit tersambung, langkah ini berubah menjadi
-            halaman pembayaran.
+            {result?.mode === 'demo'
+              ? 'Setelah DineFlow + Xendit tersambung, langkah ini berubah menjadi halaman pembayaran.'
+              : 'Status pembayaran akan diperbarui oleh DineFlow.'}
           </p>
           <button
             type="button"
-            onClick={() => setCheckout('idle')}
+            onClick={() => {
+              setCheckout('idle')
+              setResult(null)
+            }}
             className="mt-5 w-full rounded-full bg-caramel px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#c4733a] focus-visible:outline-offset-2"
           >
             Pesan lagi
@@ -230,14 +254,24 @@ export function OrderPanel() {
             </div>
             <button
               type="button"
-              onClick={beginCheckout}
+              onClick={() => void beginCheckout()}
               disabled={count === 0 || checkout === 'processing'}
               className="mt-3 w-full rounded-full bg-caramel px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#c4733a] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:bg-cream/15 disabled:text-cream/40"
             >
               {checkout === 'processing' ? 'Memproses…' : 'Lanjut ke pembayaran'}
             </button>
+            {checkout === 'error' ? (
+              <p
+                role="alert"
+                className="mt-2 rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-center text-[10px] leading-snug text-red-200"
+              >
+                {error}
+              </p>
+            ) : null}
             <p className="mt-2 text-center text-[10px] leading-snug text-cream/45">
-              Mode demo — pembayaran DineFlow/Xendit segera tersedia.
+              {isLiveCheckout()
+                ? 'Pembayaran aman diproses lewat DineFlow · Xendit.'
+                : 'Mode demo — pembayaran DineFlow/Xendit segera tersedia.'}
             </p>
           </footer>
         </>

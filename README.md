@@ -108,7 +108,44 @@ Menambahkan `&token=...` membuka panel pesanan mandiri untuk meja tersebut:
 Keranjang disimpan di `useOrderStore` (localStorage) dan otomatis dikosongkan
 saat pindah meja. Checkout saat ini berjalan sebagai **demo lokal** — belum ada
 pesanan yang dikirim. Integrasi DineFlow + Xendit tinggal mengisi
-`VITE_DINEFLOW_API_URL` (lihat kelompok integrasi pembayaran di bawah).
+`VITE_DINEFLOW_API_URL` (lihat bagian **Integrasi pembayaran** di bawah).
+
+## Integrasi pembayaran
+
+Checkout memakai satu adapter di `src/lib/orderApi.ts`:
+
+- **Tanpa env** → pesanan demo lokal; tidak ada request jaringan.
+- **Dengan env** → `POST {VITE_DINEFLOW_API_URL}/orders`, lalu browser
+  diarahkan ke `invoiceUrl` Xendit yang dibuat oleh server DineFlow.
+
+```powershell
+# .env.local
+VITE_DINEFLOW_API_URL=https://api.dineflow.example
+```
+
+Kontrak yang dipakai panel:
+
+```json
+POST /orders
+{
+  "tableId": "table_03",
+  "tableToken": "dari-url-qr",
+  "items": [{ "menuId": "senja-latte", "qty": 2 }],
+  "note": "tanpa gula"
+}
+
+Response
+{
+  "orderId": "ord_123",
+  "status": "pending_payment",
+  "total": 64000,
+  "invoiceUrl": "https://checkout.xendit.co/..."
+}
+```
+
+Server DineFlow yang bertugas memvalidasi token meja, menghitung ulang harga,
+membuat invoice Xendit, dan menerima webhook pembayaran. **Jangan** menaruh
+secret key Xendit di frontend atau di variabel `VITE_*`.
 
 ### Render scene dari layout
 
