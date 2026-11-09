@@ -107,7 +107,10 @@ Menambahkan `&token=...` membuka panel pesanan mandiri untuk meja tersebut:
 - tombol **Lanjut ke pembayaran**.
 
 Keranjang disimpan di `useOrderStore` (localStorage) dan otomatis dikosongkan
-saat pindah meja. Checkout saat ini berjalan sebagai **demo lokal** — belum ada
+saat pindah meja. Sesi QR berlaku **6 jam** (`ORDER_SESSION_MS`); tautan lama
+tidak lagi membuka panel setelah kedaluwarsa. Panel juga menyingkir otomatis
+saat walk atau kartu info zona terbuka agar tidak menutupi kontrolnya.
+Checkout saat ini berjalan sebagai **demo lokal** — belum ada
 pesanan yang dikirim. Integrasi DineFlow + Xendit tinggal mengisi
 `VITE_DINEFLOW_API_URL` (lihat bagian **Integrasi pembayaran** di bawah).
 

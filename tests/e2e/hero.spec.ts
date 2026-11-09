@@ -60,6 +60,28 @@ test('panel pesanan menyingkir saat walk atau kartu info terbuka', async ({ page
   await expect(panel).toBeVisible()
 })
 
+test('sesi QR kedaluwarsa tidak membuka panel pesanan', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem(
+      'kopi-senja:order',
+      JSON.stringify({
+        state: {
+          mode: 'selfOrder',
+          tableId: 'table_03',
+          tableToken: 'demo',
+          sessionAt: 1,
+          cart: { 'senja-latte': 1 },
+          note: '',
+        },
+        version: 0,
+      }),
+    )
+  })
+
+  await page.goto('/')
+  await expect(page.getByRole('region', { name: /pesanan meja 03/i })).toHaveCount(0)
+})
+
 test('tombol kontrol 3D bisa diakses keyboard', async ({ page }) => {
   await page.goto('/')
   const pause = page.getByRole('button', { name: /jeda animasi/i })

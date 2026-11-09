@@ -26,6 +26,7 @@ export default function App() {
   // QR meja: ?table=03 atau ?table=03&token=...
   const setMode = useOrderStore((s) => s.setMode)
   const setTableInfo = useOrderStore((s) => s.setTableInfo)
+  const expireSession = useOrderStore((s) => s.expireSession)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const table = tableFromQuery(params.get('table'))
@@ -34,6 +35,11 @@ export default function App() {
     setTableInfo(table, token)
     if (token) setMode('selfOrder')
   }, [setMode, setTableInfo])
+
+  // Sesi QR lama (mis. tautan dibuka lagi besok) tidak boleh terus aktif.
+  useEffect(() => {
+    expireSession()
+  }, [expireSession])
 
   const heroRef = useRef<HTMLElement>(null)
   const webglSupported = useWebGLSupport()

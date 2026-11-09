@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { isOrderSessionExpired } from '../lib/orderSession'
 
 /**
  * Store untuk mode interaksi self‑order / staff map.
@@ -18,12 +19,16 @@ interface OrderState {
   mode: InteractionMode
   tableId: string | null
   tableToken: string | null
+  /** Waktu scan QR terakhir; dipakai untuk masa berlaku sesi. */
+  sessionAt: number | null
   cart: Cart
   /** Catatan opsional untuk dapur/barista. */
   note: string
   /** Set mode dan data QR (jika ada) */
   setMode: (mode: InteractionMode) => void
   setTableInfo: (tableId: string | null, token: string | null) => void
+  /** Kosongkan sesi QR jika sudah lewat masa berlaku. */
+  expireSession: (now?: number) => void
   setNote: (note: string) => void
   /** Tambah satu porsi menu. */
   addItem: (menuId: string) => void
@@ -36,10 +41,11 @@ interface OrderState {
 
 export const useOrderStore = create<OrderState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       mode: 'visitor',
       tableId: null,
       tableToken: null,
+      sessionAt: null,
       cart: {},
       note: '',
       setMode: (mode) => set({ mode }),
@@ -47,9 +53,21 @@ export const useOrderStore = create<OrderState>()(
         set((state) => ({
           tableId,
           tableToken: token,
+          sessionAt: tableId ? Date.now() : null,
           // Pindah meja = keranjang lama tidak berlaku lagi.
           ...(state.tableId !== tableId ? { cart: {}, note: '' } : {}),
         })),
+      expireSession: (now = Date.now()) => {
+        if (!isOrderSessionExpired(get().sessionAt, now)) return
+        set({
+          mode: 'visitor',
+          tableId: null,
+          tableToken: null,
+          sessionAt: null,
+          cart: {},
+          note: '',
+        })
+      },
       setNote: (note) => set({ note }),
       addItem: (menuId) =>
         set((state) => ({
@@ -78,6 +96,7 @@ export const useOrderStore = create<OrderState>()(
         mode: state.mode,
         tableId: state.tableId,
         tableToken: state.tableToken,
+        sessionAt: state.sessionAt,
         cart: state.cart,
         note: state.note,
       }),
