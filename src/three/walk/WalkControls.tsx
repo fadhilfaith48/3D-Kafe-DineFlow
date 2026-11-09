@@ -91,10 +91,6 @@ export function WalkControls() {
       keys.current.clear()
       resetTouchInput()
     }
-    const onClick = () => {
-      if (document.pointerLockElement !== canvas) controls.current?.lock()
-    }
-
     const onTouchStart = (event: TouchEvent) => {
       const touch = event.changedTouches[0]
       if (!touch) return
@@ -136,8 +132,6 @@ export function WalkControls() {
       canvas.addEventListener('touchmove', onTouchMove, { passive: false })
       canvas.addEventListener('touchend', onTouchEnd)
       canvas.addEventListener('touchcancel', onTouchEnd)
-    } else {
-      canvas.addEventListener('click', onClick)
     }
 
     return () => {
@@ -148,7 +142,6 @@ export function WalkControls() {
       canvas.removeEventListener('touchmove', onTouchMove)
       canvas.removeEventListener('touchend', onTouchEnd)
       canvas.removeEventListener('touchcancel', onTouchEnd)
-      canvas.removeEventListener('click', onClick)
       canvas.style.touchAction = previousTouchAction
       keys.current.clear()
       lookTouch.current = null
@@ -229,5 +222,7 @@ export function WalkControls() {
 
   if (!active || isTouch) return null
 
-  return <PointerLockControls ref={controls} pointerSpeed={0.75} />
+  // `selector="canvas"` mencegah drei mengunci pointer saat tombol UI diklik;
+  // hanya klik di adegan yang masuk mouse-look.
+  return <PointerLockControls ref={controls} selector="canvas" pointerSpeed={0.75} />
 }
