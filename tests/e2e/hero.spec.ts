@@ -29,7 +29,7 @@ test('QR meja membuka panel pesanan dan keranjang demo', async ({ page }) => {
 
   const panel = page.getByRole('region', { name: /pesanan meja 03/i })
   await expect(panel).toBeVisible()
-  await expect(panel.getByText(/qr meja aktif/i)).toBeVisible()
+  await expect(panel.getByText(/meja dari tautan qr/i)).toBeVisible()
 
   await panel.getByRole('button', { name: /tambah senja latte/i }).click()
   await expect(panel.getByRole('button', { name: /kurangi senja latte/i })).toBeVisible()
@@ -39,6 +39,25 @@ test('QR meja membuka panel pesanan dan keranjang demo', async ({ page }) => {
   await expect(
     panel.getByRole('heading', { name: /pesanan demo diterima/i }),
   ).toBeVisible({ timeout: 5_000 })
+})
+
+test('panel pesanan menyingkir saat walk atau kartu info terbuka', async ({ page }) => {
+  await page.goto('/?table=03&token=demo')
+  const panel = page.getByRole('region', { name: /pesanan meja 03/i })
+  await expect(panel).toBeVisible()
+
+  await page.getByRole('button', { name: /jelajah kaki/i }).click()
+  await expect(panel).toHaveCount(0)
+
+  // Pointer lock aktif saat walk: Escape adalah jalan keluar yang terdokumentasi.
+  await page.keyboard.press('Escape')
+  await expect(panel).toBeVisible()
+
+  await page.keyboard.press('2')
+  await expect(panel).toHaveCount(0)
+
+  await page.keyboard.press('0')
+  await expect(panel).toBeVisible()
 })
 
 test('tombol kontrol 3D bisa diakses keyboard', async ({ page }) => {

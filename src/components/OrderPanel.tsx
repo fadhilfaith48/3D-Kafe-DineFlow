@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { formatRupiah, MENU_ITEMS } from '../data/menu'
 import { cartTotals } from '../lib/cart'
 import { createOrder, isLiveCheckout, type OrderResult } from '../lib/orderApi'
+import { useHeroStore } from '../store/useHeroStore'
 import { useOrderStore } from '../store/useOrderStore'
 
 type CheckoutState = 'idle' | 'processing' | 'done' | 'error'
@@ -13,7 +14,7 @@ type CheckoutState = 'idle' | 'processing' | 'done' | 'error'
  * tersedia, `OrderPanel` memakai adapter `createOrder` tanpa mengubah UI.
  */
 export function OrderPanel() {
-  const mode = useOrderStore((state) => state.mode)
+  const orderMode = useOrderStore((state) => state.mode)
   const tableId = useOrderStore((state) => state.tableId)
   const tableToken = useOrderStore((state) => state.tableToken)
   const cart = useOrderStore((state) => state.cart)
@@ -23,13 +24,21 @@ export function OrderPanel() {
   const addItem = useOrderStore((state) => state.addItem)
   const removeItem = useOrderStore((state) => state.removeItem)
   const clearCart = useOrderStore((state) => state.clearCart)
+  const heroMode = useHeroStore((state) => state.mode)
+  const infoOpen = useHeroStore((state) => state.infoOpen)
 
   const [collapsed, setCollapsed] = useState(false)
   const [checkout, setCheckout] = useState<CheckoutState>('idle')
   const [result, setResult] = useState<OrderResult | null>(null)
   const [error, setError] = useState('')
 
-  if (mode !== 'selfOrder' || !tableId || !tableToken) return null
+  // Walk dan kartu info zona memiliki kontrol sendiri; jangan biarkan panel
+  // pesanan menutupi joystick atau kartu tersebut.
+  const hiddenByCamera = heroMode === 'walk' || heroMode === 'focus' || infoOpen
+
+  if (orderMode !== 'selfOrder' || !tableId || !tableToken || hiddenByCamera) {
+    return null
+  }
 
   const tableNumber = tableId.slice(-2)
   const { count, subtotal } = cartTotals(cart, MENU_ITEMS)
@@ -106,7 +115,7 @@ export function OrderPanel() {
             Meja {tableNumber}
           </h2>
           <p className="mt-1 text-[11px] text-cream/55">
-            QR meja aktif · pesanan langsung ke bar
+            Meja dari tautan QR · verifikasi saat checkout
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-1">
@@ -172,7 +181,7 @@ export function OrderPanel() {
         </div>
       ) : (
         <>
-          <div className="flex-1 overflow-y-auto px-3 py-3">
+          <div className="flex-1 overflow-y-auto overscroll-contain px-3 py-3">
             <ul className="space-y-1.5">
               {MENU_ITEMS.map((item) => {
                 const qty = cart[item.id] ?? 0
